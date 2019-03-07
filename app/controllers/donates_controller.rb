@@ -61,6 +61,11 @@ class DonatesController < ApplicationController
     end
   end
 
+  def req
+    @goal = Goal.first
+    @donates = Donate.where(user: current_user)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_donate

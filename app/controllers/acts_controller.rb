@@ -60,6 +60,11 @@ class ActsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def req
+    @acts = Act.all
+    @goals = Goal.all
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
