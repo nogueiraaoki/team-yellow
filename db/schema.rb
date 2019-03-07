@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_07_195208) do
+ActiveRecord::Schema.define(version: 2019_03_07_200640) do
 
   create_table "acts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
@@ -25,7 +25,9 @@ ActiveRecord::Schema.define(version: 2019_03_07_195208) do
     t.bigint "act_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "product_id"
     t.index ["act_id"], name: "index_donates_on_act_id"
+    t.index ["product_id"], name: "index_donates_on_product_id"
     t.index ["user_id"], name: "index_donates_on_user_id"
   end
 
@@ -73,6 +75,7 @@ ActiveRecord::Schema.define(version: 2019_03_07_195208) do
   end
 
   add_foreign_key "donates", "acts"
+  add_foreign_key "donates", "products"
   add_foreign_key "donates", "users"
   add_foreign_key "goal_records", "acts"
   add_foreign_key "goal_records", "goals"
