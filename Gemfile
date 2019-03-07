@@ -27,6 +27,19 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'jquery-rails'
+gem 'serviceworker-rails'
+gem 'devise'
+
+gem 'haml-rails'
+gem 'bootstrap', '~> 4.3.1'
+gem "select2-rails"
+
+
+gem 'chart-js-rails'
+gem 'momentjs-rails'
+
+
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
