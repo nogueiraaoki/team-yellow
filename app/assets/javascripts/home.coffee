@@ -6,7 +6,8 @@
       searchBarcode(x)
     success: (x) ->
       $("#donate_product_id").val(x.id)
-      $("#barcode").val(x.id)
+      $("#donate_product_id").trigger('change')
+      $("#barcode").val(x.code)
       $("#photo").html("<img class='img-fluid' src='#{x.photo_url}'/>")
 
 @searchBarcode = (x) ->
@@ -37,8 +38,9 @@
       $('#barcode-scanner').hide()
       loadProducts()
       setTimeout ->
-        $("#donate_product_id").val(y.id)
-        $("#barcode").val(y.id)
+        $("#donate_product_id").val(x.id)
+        $("#donate_product_id").trigger('change')
+        $("#barcode").val(x.code)
         $("#photo").html("<img class='img-fluid' src='#{x.photo_url}'/>")
       , 500
 
