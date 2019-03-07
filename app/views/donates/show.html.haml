@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Quantity:
+  = @donate.quantity
+%p
+  %b User:
+  = @donate.user
+%p
+  %b Act:
+  = @donate.act
+
+= link_to 'Edit', edit_donate_path(@donate)
+\|
+= link_to 'Back', donates_path

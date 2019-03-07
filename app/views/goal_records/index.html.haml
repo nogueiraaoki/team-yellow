@@ -1,0 +1,27 @@
+%h1 Listing goal_records
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Quantity
+      %th Goal
+      %th Act
+      %th
+      %th
+      %th
+
+  %tbody
+    - @goal_records.each do |goal_record|
+      %tr
+        %td= goal_record.name
+        %td= goal_record.quantity
+        %td= goal_record.goal
+        %td= goal_record.act
+        %td= link_to 'Show', goal_record
+        %td= link_to 'Edit', edit_goal_record_path(goal_record)
+        %td= link_to 'Destroy', goal_record, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Goal record', new_goal_record_path

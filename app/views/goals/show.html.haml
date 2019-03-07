@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @goal.name
+%p
+  %b End at:
+  = @goal.end_at
+%p
+  %b Quantity:
+  = @goal.quantity
+%p
+  %b Kind:
+  = @goal.kind
+
+= link_to 'Edit', edit_goal_path(@goal)
+\|
+= link_to 'Back', goals_path

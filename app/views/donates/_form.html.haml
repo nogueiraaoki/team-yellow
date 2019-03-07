@@ -1,0 +1,19 @@
+= form_for @donate do |f|
+  - if @donate.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@donate.errors.count, "error")} prohibited this donate from being saved:"
+      %ul
+        - @donate.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :quantity
+    = f.number_field :quantity
+  .field
+    = f.label :user
+    = f.text_field :user
+  .field
+    = f.label :act
+    = f.text_field :act
+  .actions
+    = f.submit 'Save'
