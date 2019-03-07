@@ -1,0 +1,6 @@
+$("#addActs").modal('hide')
+loadActs()
+setTimeout(function(){
+  $("#donate_act_id").val(<%=@act.id%>).trigger('change')
+},1000)
+

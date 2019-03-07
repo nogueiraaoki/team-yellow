@@ -1,2 +1,112 @@
-%h1 Home#index
-%p Find me in app/views/home/index.html.haml
+.row
+  .col-md-4
+    %h4 Meta por Campanha
+    %canvas#goal_acts{width: 200, height: 200}
+  .col-md-4
+    %h4 Top Produtos
+    %canvas#top_products{width: 200, height: 200}
+  .col-md-4
+    %h4 Desepenho Individual Diário
+    %canvas#user_donates{width: 200, height: 200}
+.col-md-12
+  %center
+    %button.btn.btn-success{data: {toggle: 'modal', target: '#addProduct'}}
+      Adicionar Arregadação
+
+
+/ Modal
+#addProduct.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exampleModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog{:role => "document"}
+    .modal-content
+      .modal-header
+        %h5#exampleModalLabel.modal-title Nova Arrecadação
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+      .modal-body
+        .col-md-12
+          -# #barcode-scanner
+          #photo
+        .row
+          .col-md-12
+            %label Codebar: 
+          .col-md-12
+            %input#barcode.form-control{type: 'number'}
+          -# .col-md-12
+            -# %input#camera.form-control{type: 'file', accept: 'image/*'}
+          .col-md-12
+            #actions
+        = form_for(@donate, remote: true) do |f|
+          .row
+            .col-md-12
+              = f.label :product
+            .col-md-10
+              = f.select :product_id, [], {}, class: 'form-control select2'
+            .col-md-1
+              %button.btn.btn-success{data: {toggle: 'modal', target: "#newProduct"}}
+                +
+            .col-md-12
+              = f.label :quantity
+              = f.number_field :quantity, class: 'form-control'
+            .col-md-12
+              = f.label :act
+            .col-md-10
+              = f.select :act_id, [], {}, class: 'form-control select2' 
+            .col-md-1
+              %button.btn.btn-success{data: {toggle: 'modal', target: "#addActs"}}
+                +
+            .col-md-12
+              = f.label :user
+              = f.select :user_id, options_for_select(User.order(email: :asc).all.map{|s|[s.email, s.id]}, selected: current_user.id), {}, class: 'form-control select2'
+          %br
+          .col-md-2.offset-md-10
+            -# = f.hidden_field :user_id, value: current_user.id
+            = f.submit 'Salvar', class: 'btn btn-success'
+      .modal-footer
+        %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Close
+        -# %button.btn.btn-primary{:type => "button"} Save changes
+
+
+
+#addActs.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exampleModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog{:role => "document"}
+    .modal-content
+      .modal-header
+        %h5#exampleModalLabel.modal-title Criar Campanha
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+      .modal-body
+        = form_for(@acts, remote: true) do |f|
+          .col-md-12
+            = f.label :name
+            = f.text_field :name, class: "form-control"
+          .col-md-12
+            = f.label :note
+            = f.text_area :note, class: "form-control"
+          %br
+          .col-md-2.offset-md-10
+            = f.submit 'Salvar', class: 'btn btn-success'
+      .modal-footer
+        %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Close
+        -# %button.btn.btn-primary{:type => "button"} Save changes
+
+#newProduct.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exampleModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog{:role => "document"}
+    .modal-content
+      .modal-header
+        %h5#exampleModalLabel.modal-title Criar Produto
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+      .modal-body
+        = form_for(@product, remote: true) do |f|
+          .col-md-12
+            = f.label :name
+            = f.text_field :name, class: "form-control"
+          .col-md-12
+            -# = f.label :note
+            -# = f.text_area :note, class: "form-control"
+          %br
+          .col-md-12
+            = f.submit 'Salvar', class: 'btn btn-success'
+      .modal-footer
+        %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Close
+        -# %button.btn.btn-primary{:type => "button"} Save changes
