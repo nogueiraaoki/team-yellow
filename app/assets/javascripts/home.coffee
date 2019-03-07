@@ -1,8 +1,7 @@
 @searchProduct = (x) ->
   $.ajax
-    url: "/products/#{x}.json"
+    url: "/products.json?code=x"
     error: (y) ->
-      initialize()
       searchBarcode(x)
     success: (x) ->
       $("#donate_product_id").val(x.id)
@@ -21,9 +20,9 @@
       saveProduct(y)
 
 @saveProduct = (x) ->
-  console.log data = 
+  data = 
     'product[name]': x.description
-    'product[id]': x.gtin
+    'product[code]': x.gtin
     'product[price]': x.price
     'product[quantity]': x.gtins[0].commercial_unit.quantity_packaging
     'product[kind]': x.gtins[0].commercial_unit.type_packaging
