@@ -32,13 +32,15 @@ renderChartMix = (data, selector) ->
   })
 renderChartpie = (data, selector) ->
   new Chart(selector, {
-    type: 'doughnut'
+    type: 'pie'
+    options:
+      legend: false
     data:
       datasets:[{
         data: data.values
         backgroundColor: ['red', 'blue']
       }]
-      # labels: data.labels
+      labels: data.labels
   })
 renderChartline = (data, selector) ->
   new Chart(selector, {

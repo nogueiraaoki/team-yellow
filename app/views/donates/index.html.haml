@@ -3,6 +3,7 @@
 %table
   %thead
     %tr
+      %th Product
       %th Quantity
       %th User
       %th Act
@@ -13,9 +14,10 @@
   %tbody
     - @donates.each do |donate|
       %tr
+        %td= donate.product.name
         %td= donate.quantity
-        %td= donate.user
-        %td= donate.act
+        %td= donate.user.email
+        %td= donate.act.name
         %td= link_to 'Show', donate
         %td= link_to 'Edit', edit_donate_path(donate)
         %td= link_to 'Destroy', donate, method: :delete, data: { confirm: 'Are you sure?' }
