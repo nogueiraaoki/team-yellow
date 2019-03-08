@@ -1,11 +1,10 @@
 @searchProduct = (code) ->
   $.ajax
     url: "/products.json?code=#{code}"
-    error: (y) ->
+    error: (x) ->
       initialize()
       searchBarcode(code)
     success: (x) ->
-      console.log x
       if x.length == 0
         initialize()
         searchBarcode(code)
@@ -23,8 +22,7 @@
       initialize()
       load_quagga()
     success: (y) ->
-       console.log y
-      saveProduct y
+      saveProduct(y)
 
 @saveProduct = (x) ->
   data = 
@@ -44,10 +42,10 @@
       $('#barcode-scanner').hide()
       setTimeout ->
         loadProducts()
-        $("#donate_product_id").val(x.id)
+        $("#donate_product_id").val(y.id)
         $("#donate_product_id").trigger('change')
-        $("#barcode").val(x.code)
-        $("#photo").html("<img class='img-fluid' src='#{x.photo_url}'/>")
+        $("#barcode").val(y.code)
+        $("#photo").html("<img class='img-fluid' src='#{y.photo_url}'/>")
       , 500
 
 @initialize = ->
