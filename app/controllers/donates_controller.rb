@@ -30,6 +30,7 @@ class DonatesController < ApplicationController
       if @donate.save
         format.html { redirect_to @donate, notice: 'Donate was successfully created.' }
         format.json { render :show, status: :created, location: @donate }
+    	format.js   {}
       else
         format.html { render :new }
         format.json { render json: @donate.errors, status: :unprocessable_entity }
