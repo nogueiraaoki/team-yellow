@@ -1,0 +1,11 @@
+I"è(function() {
+  $(document).on("turbolinks:load", function() {
+    $(".select2").select2({
+      dropdownParent: $('#addProduct'),
+      width: 'resolve'
+    });
+    return this.getProduct = function(code) {};
+  });
+
+}).call(this);
+:ET

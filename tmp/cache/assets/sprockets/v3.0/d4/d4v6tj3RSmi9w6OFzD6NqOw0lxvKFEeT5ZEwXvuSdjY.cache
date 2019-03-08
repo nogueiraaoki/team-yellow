@@ -1,0 +1,145 @@
+I"ƒ(function() {
+  this.searchProduct = function(code) {
+    return $.ajax({
+      url: "/products.json?code=" + code,
+      error: function(x) {
+        initialize();
+        return searchBarcode(code);
+      },
+      success: function(x) {
+        if (x.length === 0) {
+          initialize();
+          return searchBarcode(code);
+        } else {
+          $("#donate_product_id").val(x[0].id);
+          $("#donate_product_id").trigger('change');
+          $("#barcode").val(x[0].code);
+          return $("#photo").html("<img class='img-fluid' src='" + x[0].photo_url + "'/>");
+        }
+      }
+    });
+  };
+
+  this.searchBarcode = function(x) {
+    return $.ajax({
+      headers: {
+        "X-Cosmos-Token": "tlfc0QU8XEA-ZZmFLcGzlw"
+      },
+      url: "https://api.cosmos.bluesoft.com.br/gtins/" + x,
+      error: function(x) {
+        initialize();
+        return load_quagga();
+      },
+      success: function(y) {
+        return saveProduct(y);
+      }
+    });
+  };
+
+  this.saveProduct = function(x) {
+    var data;
+    data = {
+      'product[name]': x.description,
+      'product[code]': x.gtin,
+      'product[price]': x.price,
+      'product[quantity]': x.gtins[0].commercial_unit.quantity_packaging,
+      'product[kind]': x.gtins[0].commercial_unit.type_packaging,
+      'product[photo_url]': x.thumbnail
+    };
+    return $.ajax({
+      url: '/products.json',
+      type: 'post',
+      data: data,
+      error: function(data) {
+        return initialize();
+      },
+      success: function(y) {
+        $('#barcode-scanner').hide();
+        return setTimeout(function() {
+          loadProducts();
+          $("#donate_product_id").val(y.id);
+          $("#donate_product_id").trigger('change');
+          $("#barcode").val(y.code);
+          return $("#photo").html("<img class='img-fluid' src='" + y.photo_url + "'/>");
+        }, 500);
+      }
+    });
+  };
+
+  this.initialize = function() {
+    $("#donate_product_id").val("");
+    $("#barcode").val("");
+    $('#barcode-scanner').show();
+    return $("#photo").html("");
+  };
+
+  this.loadProducts = function() {
+    var container;
+    container = $("#donate_product_id");
+    container.html("<option></option>");
+    return $.ajax({
+      url: "/products.json",
+      success: function(x) {
+        var i, len, results, u;
+        results = [];
+        for (i = 0, len = x.length; i < len; i++) {
+          u = x[i];
+          results.push(container.append("<option value='" + u.id + "'>" + u.name + "</option>"));
+        }
+        return results;
+      }
+    });
+  };
+
+  this.loadActs = function() {
+    var container;
+    container = $("#donate_act_id");
+    container.html("<option></option>");
+    return $.ajax({
+      url: "/acts.json",
+      success: function(x) {
+        var i, len, results, u;
+        results = [];
+        for (i = 0, len = x.length; i < len; i++) {
+          u = x[i];
+          results.push(container.append("<option value='" + u.id + "'>" + u.name + "</option>"));
+        }
+        return results;
+      }
+    });
+  };
+
+  $(document).on('turbolinks:load', function() {
+    $("#addProduct").on("shown.bs.modal", function() {
+      loadProducts();
+      loadActs();
+      initialize();
+      return load_quagga();
+    });
+    $("#addProduct").on("hidden.bs.modal", function() {
+      return Quagga.stop();
+    });
+    $(document).on('click', "#reload", function() {
+      return load_quagga();
+    });
+    $(document).on("change", "#barcode", function(e) {
+      var barcode;
+      barcode = $(e.target).val();
+      return searchProduct(barcode);
+    });
+    return $(document).on("change", "#donate_product_id", function(e) {
+      var id;
+      Quagga.stop();
+      $('#barcode-scanner').hide();
+      id = $(e.target).val();
+      return $.ajax({
+        url: "/products/" + id + ".json",
+        success: function(data) {
+          return $("#photo").html("<img class='img-fluid' src='" + data.photo_url + "'/>");
+        }
+      });
+    });
+  });
+
+}).call(this);
+:ET

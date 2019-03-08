@@ -1,0 +1,106 @@
+I"!	(function() {
+  var getActs, getDonates, getProducts, renderChartMix, renderChartline, renderChartpie;
+
+  getActs = function(selector) {
+    return $.ajax({
+      url: "/act/request.json",
+      success: function(data) {
+        return renderChartMix(data, selector);
+      }
+    });
+  };
+
+  getProducts = function(selector) {
+    return $.ajax({
+      url: "/product/request.json",
+      success: function(data) {
+        return renderChartpie(data, selector);
+      }
+    });
+  };
+
+  getDonates = function(selector) {
+    return $.ajax({
+      url: "/donate/request.json",
+      success: function(data) {
+        return renderChartline(data, selector);
+      }
+    });
+  };
+
+  renderChartMix = function(data, selector) {
+    return new Chart(selector, {
+      type: 'bar',
+      data: {
+        datasets: [
+          {
+            label: "Atual",
+            data: [0].concat(data.atual),
+            backgroundColor: ['', 'red', 'blue']
+          }, {
+            label: "Meta",
+            data: [0].concat(data.acts),
+            type: "line"
+          }
+        ],
+        labels: [''].concat(data.labels)
+      }
+    });
+  };
+
+  renderChartpie = function(data, selector) {
+    return new Chart(selector, {
+      type: 'doughnut',
+      data: {
+        datasets: [
+          {
+            data: data.values,
+            backgroundColor: ['red', 'blue']
+          }
+        ]
+      }
+    });
+  };
+
+  renderChartline = function(data, selector) {
+    return new Chart(selector, {
+      type: 'line',
+      data: {
+        datasets: [
+          {
+            label: 'Ideal',
+            data: data.ideal,
+            borderColor: ['green']
+          }, {
+            label: 'Atual',
+            data: data.atual,
+            borderColor: ['yellow']
+          }
+        ],
+        labels: data.labels
+      }
+    });
+  };
+
+  this.reloadChart = function() {
+    var goal_acts, top_products, user_donates;
+    goal_acts = $("#goal_acts");
+    top_products = $("#top_products");
+    user_donates = $("#user_donates");
+    if (goal_acts.length > 0) {
+      getActs(goal_acts);
+    }
+    if (top_products.length > 0) {
+      getProducts(top_products);
+    }
+    if (user_donates.length > 0) {
+      return getDonates(user_donates);
+    }
+  };
+
+  $(document).on("turbolinks:load", function() {
+    return reloadChart();
+  });
+
+}).call(this);
+:ET

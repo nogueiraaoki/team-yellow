@@ -1,4 +1,6 @@
 @searchProduct = (code) ->
+  $("#donate_product_id").val("")
+  $("#donate_product_id").trigger('change')
   $.ajax
     url: "/products.json?code=#{code}"
     error: (x) ->
@@ -40,8 +42,8 @@
       initialize()
     success: (y) ->
       $('#barcode-scanner').hide()
+      loadProducts()
       setTimeout ->
-        loadProducts()
         $("#donate_product_id").val(y.id)
         $("#donate_product_id").trigger('change')
         $("#barcode").val(y.code)
