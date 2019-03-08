@@ -15,13 +15,16 @@ getDonates = (selector) ->
       renderChartline(data, selector)
 
 renderChartMix = (data, selector) ->
+  colors = []
+  for u in data.atual
+    colors.push "rgb(#{Math.floor(Math.random() * 255)},#{Math.floor(Math.random() * 255)},#{Math.floor(Math.random() * 255)})"
   new Chart(selector, {
     type: 'bar'
     data:
       datasets: [{
         label: "Atual"
         data: [0].concat(data.atual)
-        backgroundColor: ['','red', 'blue']
+        backgroundColor: [''].concat(colors)
       }
       {
         label: "Meta"
@@ -31,6 +34,9 @@ renderChartMix = (data, selector) ->
       labels: [''].concat(data.labels)
   })
 renderChartpie = (data, selector) ->
+  colors = []
+  for u in data.values
+    colors.push "rgb(#{Math.floor(Math.random() * 255)},#{Math.floor(Math.random() * 255)},#{Math.floor(Math.random() * 255)})"
   new Chart(selector, {
     type: 'pie'
     options:
@@ -38,7 +44,7 @@ renderChartpie = (data, selector) ->
     data:
       datasets:[{
         data: data.values
-        backgroundColor: ['red', 'blue']
+        backgroundColor: colors
       }]
       labels: data.labels
   })
